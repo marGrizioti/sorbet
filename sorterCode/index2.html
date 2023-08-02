@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sorter</title>
+    <link rel="stylesheet" href="designCSS.css" />
+    <link rel="stylesheet" href="js-libraries/jquery-ui-1.11.4.custom/jquery-ui.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="js-libraries/jQuery-TE_v.1.4.0/jquery-te-1.4.0.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+
+
+    <style>
+        * { padding: 0; margin: 0; }
+        canvas { background: #eee; display: block; margin: 0 auto; }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/javascript" src="SorterTest2.js?v=1.0.9"> </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="designMode.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="handleFiles.js"></script>
+
+
+
+
+
+</head>
+ <body>
+     <div id="score">
+
+         </div>
+ <canvas id="myCanvas" width="1200" height="600"></canvas>
+ <button id="startButton" >Start</button>
+ <button id="stopButton" >Stop</button>
+ <button onclick="vanisher()">Design</button>
+ <button onclick="canvasState.saveGame()">save</button>
+ <button onclick="canvasState.createFile()">download</button>
+     <div id="openFile">
+         <input type="file" id="loadGame" onchange="canvasState.readFile()"  />
+     </div>
+
+
+     <div id="vanishDIV" style=" display : none">
+
+         <!--  <form id="frm1" action="/action_page.php">
+
+             <input type="submit" value="Submit">
+         </form>
+
+         <div class="element1">
+             <button class="add_form_field">Add New Field <span style="font-size:16px; font-weight:bold;">+ </span></button>
+             <div><input type="text" name="mytext[]" ><a style="visibility: hidden" href="#" class="delete">Delete</a></div>
+         </div>
+
+         <div class="container1">
+             <button class="add_form_field">Add New Field &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+             <div><input type="text" name="mytext[]" ><a style="visibility: hidden" href="#" class="delete">Delete</a></div>
+         </div> -->
+
+
+        <div id= "data" class = "data_table">
+            <div id="data_bar" class= "data_bar">
+                <div class="table-responsive">
+                <input type="image" src="imgs/delete.png" width="20px" height="20px" onclick="canvasState.deleteField()" id="deleteIco" title="Delete selected attribute" style="float:left; visibility: visible"/>
+                <input type="image" src="imgs/add.png" width="20px" height="20px" style="float:right" onclick="canvasState.addField()" id = "addAttribute" title="Add attribute"/>
+            </div>
+            </div>
+
+
+
+        <div id = "tableContainer" >
+            <div id= "headerContainer"  >
+                <table id="datatableHeader" class="datatable">
+                    <div class="table-responsive">
+                    <thead>
+                    <tr>
+                        <th>ANTIKEIMENA
+                        </th>
+                        <th> <input type="text" class="tableField" value="Field1" />
+                            <input type = "checkbox" id = "2_check" />
+                            <span>
+          </span>
+                        </th>
+                        <th> <input type="text" class="tableField" value="Field2" />
+                            <input type = "checkbox" id = "3_check"onclick ="canvasState.selectField (this)"/>
+                            <span>
+          </span>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <div id="bodyContainer" >
+                <table id="datatable" class="datatable">
+                    <tbody>
+                    <input type="image" src="imgs/delete.png" width="20px" height="20px" style="float:left; visibility: visible" onclick="canvasState.deleteElement()" id="deleteIco" title="Delete selected attribute" />
+                    <input id="addPointIcon" type="image" src="imgs/add.png" width="20px" height="20px" title="Add point" onclick="canvasState.newEntry(0)" id = "addPoint" title="Add point" >
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+         <br>
+
+
+
+
+
+     <script>
+
+
+
+
+
+
+         var startButton = document.getElementById("startButton");
+         startButton.addEventListener("click", function (){
+             canvasState.stop();
+             canvasState.start();                //initialize lists of elements
+
+         })
+
+         var canvas = document.getElementById("myCanvas");
+         var answers=[];
+         var questions=[];
+/*        var answers = localStorage.getItem('answers');
+        if (questions ==undefined){questions = [];}
+        else{questions = JSON.parse(questions);}
+        if (answers ==null){answers = [];}
+        else{answers = JSON.parse(answers);}*/
+
+       /*  var questions = [
+             {
+                 right: [1, 2],
+                 text:"",
+                 type: 'rectangle'
+             },
+             {
+                 right: [2],
+                 text:"spineli",
+                 img : "https://f0.pngfuel.com/png/125/878/red-paint-clip-art-png-clip-art.png",
+                 type: 'image'
+             },
+           /* {
+                 right: 3,
+                 text:"spineli",
+                 img : document.getElementById("blue"),
+                 type: 'image'
+             },*/
+    /*         {
+                 right: [1],
+                 text:"",
+                 type: 'circle'
+             },
+             {
+
+                 right: [3],
+                 text: "κύκλος",
+                 type: 'text'
+             },
+             {
+
+                 right: [3],
+                 right: 2,
+                 text: "πράσινο",
+                 type: 'text'
+             },
+             {
+
+                 right: [3],
+                 text: "μπλέ",
+                 type: 'text'
+             },
+             {
+
+                 right: [3],
+                 text: "κόκκινο",
+                 type: 'text'
+             }
+         ];*/
+
+       /* var answers = [
+           //  {text: "test1"},
+           //  {text: "test2"},
+           //  {text: "test3"},
+             {text: "test4"},
+             {text: "σχήμα"},
+             {text: "χρώμα"},
+             {text: "λέξη"}
+         ]*/
+
+         var elementPerRound = 20;
+
+
+        var canvasState = new  CanvasState(canvas, questions, answers, elementPerRound);
+
+
+        var stopButton = document.getElementById("stopButton");
+         stopButton.addEventListener("click", function (){
+             canvasState.stop();
+         })
+
+
+     </script>
+     </body>
+     </html>
